@@ -3,44 +3,33 @@ use std::io;
 //const WORD_LENGTH = 5;
 
 fn main() {
-    println!("Type word to play");
+    let mut attempt_count = 0;
+    let max_guesses = 6;
+    let mut correct = false;
 
-    let mut input = String::new();
-    io::stdin().read_line(&mut input).unwrap(); // TODO: Handle err
+    while attempt_count < max_guesses && !correct {
+        println!("Type word to play: {}", attempt_count);
 
-    let correct = check_answer(input);
+        let mut input = String::new();
+        io::stdin().read_line(&mut input).unwrap(); // TODO: Handle err
+        correct = check_answer(input);
 
-    println!("{:?}", correct);
+        attempt_count += 1;
+    }
+
+    if attempt_count >= max_guesses {
+        println!("You lose :(");
+    } else {
+        println!("You win!");
+    }
 
     // TODO:
-    // * Add 5 tries with an ultimate winning / losing condition
     // * Add basic UI
 }
 
-#[derive(Debug)]
-enum Score {
-    FullyCorrect, // Green
-    CorrectChar,  // Yellow
-    NotFound,     // Gray
-}
+fn check_answer(s: String) -> bool {
+    let answer = "heart".to_string();
+    let s = s.trim();
 
-#[derive(Debug)]
-struct WordScore {
-    letter_scores: Vec<Score>,
-}
-
-fn check_answer(guess: String) -> WordScore {
-    // TODO: Stop hardcoding answer and use a random word from a dictionary of common words
-    let answer = "perch";
-
-    // TODO: Implement
-    WordScore {
-        letter_scores: vec![
-            Score::FullyCorrect,
-            Score::FullyCorrect,
-            Score::FullyCorrect,
-            Score::FullyCorrect,
-            Score::FullyCorrect,
-        ],
-    }
+    return answer == s;
 }
